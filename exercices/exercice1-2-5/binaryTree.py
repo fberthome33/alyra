@@ -24,8 +24,6 @@ class Noeud:
 
         print(out)
 
-
-
     def trouverNoeud(self, valeur):
         if self is not None and valeur is not None:
             if self.valeur == valeur:
@@ -42,6 +40,11 @@ class Noeud:
         else:
             return self.gauche.minValue();
 
+    def maxValue(self):
+        if self.droite is None:
+            return self.valeur;
+        else:
+            return self.droite.maxValue();
 
     def ajouterNoeud(self, valeur):
         if self is not None:
@@ -63,39 +66,48 @@ class Noeud:
             else:
                 print("Node already exists");
 
-    #Méthode pour supprimer un noeud
+    # Méthode pour supprimer un noeud
     def supprimerNoeud(self, valeur):
+        if valeur is None:
+            return;
         if valeur < self.valeur:
             if self.gauche is not None:
-                  return node.gauche.supprimerNoeud(valeur);
+                return self.gauche.supprimerNoeud(valeur);
             else:
-                  return False;
+                return False;
         elif valeur > self.valeur:
             if self.droite is not None:
-                  return self.droite.supprimerNoeud(valeur);
+                return self.droite.supprimerNoeud(valeur);
             else:
-                  return False;
+                return False;
         else:
-                if self.gauche is not None and self.droite is not None:
-                    self.valeur = self.droite.minValue();
-                    self.droite.supprimerNoeud(self.valeur);
-                elif self.parent.gauche == self:
-                    if self.gauche is not None:
-                        self.parent.gauche = self.gauche;
-                    else:
-                        self.parent.gauche = self.droite;
-                elif self.parent.droite == self:
-                    if self.gauche is not None:
-                        self.parent.droite = self.gauche;
-                    else:
-                        self.parent.droite = self.droite;
+            if self.gauche is not None and self.droite is not None:
+                valeurGauche = self.gauche.minValue();
+                valeurDroite = self.droite.maxValue();
 
-                return True;
+                if self.valeur - valeurGauche < valeurDroite - self.valeur:
+                    self.gauche.supprimerNoeud(valeurGauche);
+                    self.valeur = valeurGauche;
+                else:
+                    self.droite.supprimerNoeud(valeurDroite);
+                    self.valeur = valeurDroite;
 
 
+            elif self.parent.gauche == self:
+                if self.gauche is not None:
+                    self.parent.gauche = self.gauche;
+                else:
+                    self.parent.gauche = self.droite;
+            elif self.parent.droite == self:
+                if self.gauche is not None:
+                    self.parent.droite = self.gauche;
+                else:
+                    self.parent.droite = self.droite;
 
-    #Méthode pour afficher l’arbre selon un parcours infixe
-    #Cette méthode doit retournée un tableau contenant la valeur des noeuds
+            return True;
+
+    # Méthode pour afficher l’arbre selon un parcours infixe
+    # Cette méthode doit retournée un tableau contenant la valeur des noeuds
     def infixeNoeud(self, array):
         if self is not None:
             if self.gauche is not None:
@@ -108,13 +120,11 @@ class Noeud:
                 self.droite.infixeNoeud(array);
 
 
-
-
 class Arbre:
     def __init__(self):
         self.racine = None
 
-    #Méthode pour trouver une valeur donnée dans un arbre binaire de recherche
+    # Méthode pour trouver une valeur donnée dans un arbre binaire de recherche
     def trouverNoeud(self, val):
         if self.racine is None:
             return False;
@@ -127,15 +137,15 @@ class Arbre:
         else:
             self.racine.ajouterNoeud(val)
 
-    #Méthode pour supprimer un noeud
+    # Méthode pour supprimer un noeud
     def supprimerNoeud(self, val):
         if self.racine.valeur == val:
             self.racine = None;
         else:
             self.racine.supprimerNoeud(val);
 
-    #Méthode pour afficher l’arbre selon un parcours infixe
-    #Cette méthode doit retournée un tableau contenant la valeur des noeuds
+    # Méthode pour afficher l’arbre selon un parcours infixe
+    # Cette méthode doit retournée un tableau contenant la valeur des noeuds
     def infixe(self):
         array = [];
         if self is not None:
@@ -143,35 +153,8 @@ class Arbre:
                 self.racine.infixeNoeud(array);
                 return array;
 
-    #Méthode pour afficher la valeur d'un noeud à partir de sa valeur
+    # Méthode pour afficher la valeur d'un noeud à partir de sa valeur
     def printNoeud(self, val):
         noeud = self.trouverNoeud(val)
         if noeud is not None:
             noeud.toString()
-
-
-a = Arbre()
-a.ajouterNoeud(30)
-a.ajouterNoeud(18)
-a.ajouterNoeud(24)
-a.ajouterNoeud(11)
-a.ajouterNoeud(33)
-a.ajouterNoeud(13)
-a.ajouterNoeud(40)
-a.ajouterNoeud(46)
-a.ajouterNoeud(14)
-a.ajouterNoeud(21)
-a.ajouterNoeud(12)
-a.ajouterNoeud(10)
-a.ajouterNoeud(31)
-a.ajouterNoeud(35)
-a.ajouterNoeud(32)
-
-print(a.infixe())
-
-
-node = a.trouverNoeud(None);
-if node is not None:
-    print(node);
-    print("La valeur " + node.valeur + " appartient à l'arbre.");
-

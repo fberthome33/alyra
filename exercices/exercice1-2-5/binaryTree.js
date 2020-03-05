@@ -77,19 +77,18 @@ class Arbre {
         }
     }
 
-    
-    minValue(noeud) {
-        if (noeud.gauche === undefined)
-              return noeud.valeur;
-        else
-              return this.minValue(noeud.gauche);
-    }
-
     maxValue(noeud) {
         if (noeud.droite === undefined)
               return noeud.valeur;
         else
               return this.maxValue(noeud.droite);
+    }
+
+    minValue(noeud) {
+        if (noeud.gauche=== undefined)
+              return noeud.valeur;
+        else
+              return this.minValue(noeud.gauche);
     }
     //Méthode pour supprimer un noeud
     supprimerNoeudArbre(node, valeur) {
@@ -105,8 +104,17 @@ class Arbre {
                   return false;
         } else {
                 if (node.gauche !== undefined && node.droite !== undefined) {
-                    node.valeur = this.maxValue(node.gauche);
-                    this.supprimerNoeudArbre(node.gauche, node.valeur);
+                    node.valeurGauche = this.minValue(node.gauche);
+                    node.valeurDroite = this.maxValue(node.droite);
+
+                    if (node.valeur - node.valeurGauche < node.valeurDroite - node.valeur) {
+                        this.supprimerNoeudArbre(node.gauche, node.valeurGauche);
+                        node.valeur = node.valeurGauche;
+                    } else {
+                        this.supprimerNoeudArbre(node.droite, node.valeurDroite);
+                         node.valeur = node.valeurDroite;
+                    }
+
                 } else if (node.parent.gauche === node) {
                     node.parent.gauche = (node.gauche !== undefined) ? node.gauche : node.droite;
                 } else if (node.parent.droite === node) {
@@ -122,7 +130,7 @@ class Arbre {
         } else {
             this.supprimerNoeudArbre(this.racine, valeur);
         }
-         
+
     }
 
 
@@ -135,10 +143,10 @@ class Arbre {
             }
             if(noeud.valeur !== undefined) {
                 array.push(noeud.valeur);
-            }   
+            }
             if(noeud.droite !== undefined) {
                 this.infixeNoeud(noeud.droite, array);
-            }       
+            }
         }
     }
 
@@ -150,7 +158,7 @@ class Arbre {
                 return array;
             }
         }
-        
+
     }
 
     //Méthode pour afficher la valeur d'un noeud à partir de sa valeur
@@ -159,30 +167,3 @@ class Arbre {
         if (noeud !== undefined) noeud.toString();
     }
 }
-
-let a = new Arbre();	
-a.printNoeud(33);	
-a.printNoeud(35);	
-a.printNoeud(46);	 
-a.ajouterNoeud(24);	 
-a.ajouterNoeud(11);	 
-a.ajouterNoeud(33);	 
-a.ajouterNoeud(13);	 
-a.ajouterNoeud(40);	 
-a.ajouterNoeud(46);	 
-a.ajouterNoeud(14);	 
-a.ajouterNoeud(21);	 
-a.ajouterNoeud(12);	 
-a.ajouterNoeud(10);	 
-a.ajouterNoeud(31);	 
-a.ajouterNoeud(35);	 
-a.ajouterNoeud(32);	 
- 	 
-a.supprimerNoeud(40);	 
-a.printNoeud(33);	 
-a.printNoeud(35);	 
-a.printNoeud(46);
-
-//Noeud 33:  L31 R35 P24
-//Noeud 35:  L- R46 P33
-//:pmNoeud 46:  L- R- P35
