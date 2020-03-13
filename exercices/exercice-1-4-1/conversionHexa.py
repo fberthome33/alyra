@@ -21,14 +21,17 @@ def hexBigEndian(number):
     hexBigEndian = conversionHexa(number);
     return formatHexArray(hexBigEndian);
 
+def convertBigToLittleEndian(hexBigEndian):
+    for index in range(0, int(len(hexBigEndian) / 2) - 1, 2):
+        tmp = hexBigEndian[index: index + 2];
+        hexBigEndian[index: index + 2] = hexBigEndian[
+                                            len(hexBigEndian) - index - 2:len(hexBigEndian) - index];
+        hexBigEndian[len(hexBigEndian) - index - 2:len(hexBigEndian) - index] = tmp;
+    return hexBigEndian;
 
 def hexLittleEndian(number):
-    hexLittleEndian = conversionHexa(number);
-    for index in range(0, int(len(hexLittleEndian) / 2) - 1, 2):
-        tmp = hexLittleEndian[index: index + 2];
-        hexLittleEndian[index: index + 2] = hexLittleEndian[
-                                            len(hexLittleEndian) - index - 2:len(hexLittleEndian) - index];
-        hexLittleEndian[len(hexLittleEndian) - index - 2:len(hexLittleEndian) - index] = tmp;
+    hexBigEndian = conversionHexa(number);
+    hexLittleEndian = convertBigToLittleEndian(hexBigEndian);
 
     return formatHexArray(hexLittleEndian);
 
@@ -38,8 +41,16 @@ def convertHexa(number):
         return dictHexa.get(number);
     return number;
 
+def hexLittleEndianVarInt(number):
+    hexBigEndian = conversionHexa(number);
+    hexLittleEndian = convertBigToLittleEndian(hexBigEndian);
+    if number > 253:
+        hexLittleEndian[0:0] = ['F', 'D']
+    return formatHexArray(hexLittleEndian);
 
 hexBigEndian = hexBigEndian(466321);
-print("conv1", hexBigEndian);  # → 0x 07 1d 91 (big endian)
+print("conv BigEndian", hexBigEndian);  # → 0x 07 1d 91 (big endian)
 hexLittleEndian = hexLittleEndian(466321);
-print("conv2", hexLittleEndian)  # → 0x 91 1d 07 (little endian)
+print("conv LittleIndian", hexLittleEndian)  # → 0x 91 1d 07 (little endian)
+hexLittleEndianVarInt = hexLittleEndianVarInt(466321);
+print("conv LittleIndianVarInt", hexLittleEndianVarInt)  # → 0x fd 91 1d 07 (little endian)
