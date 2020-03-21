@@ -1,6 +1,8 @@
 import string;
+
 ALPH = string.ascii_uppercase
 WHITESPACE = " "
+
 
 def frequences(chaine, size=1):
     freq = {};
@@ -8,34 +10,40 @@ def frequences(chaine, size=1):
     for index in range(len(vChaine)):
         charSeq = vChaine[index:index + size];
         if charSeq not in freq.keys():
-            freq[charSeq] = 1;
+            freq[charSeq] = [index];
         else:
-            freq[charSeq] += 1;
+            freq[charSeq].append(index);
 
-    return {k: v for k, v in sorted(freq.items(), key=lambda item: item[1], reverse=True)};
+    return {k: v for k, v in sorted(freq.items(), key=lambda item: len(item[1]), reverse=True)};
+
 
 def formatFrequences(freqCharDict):
     freqDisplay = {};
     for key in freqCharDict:
-        if freqCharDict[key] > 1:
+        if len(freqCharDict[key]) > 1:
             freqDisplay[key] = freqCharDict[key];
 
     return WHITESPACE.join("".join((str(k), str(v))) for k, v in freqDisplay.items());
 
 
-def vigenere(chaine, key, decrypt = None):
+def vigenere(chaine, key, decrypt=None):
     vigenereString = "";
     index = 0;
+    mult = 1;
+    if decrypt:
+        mult = -1;
     while index < len(chaine):
         while chaine[index] == ' ':
             vigenereString += chaine[index];
             index += 1;
-        mult = 1;
-        if decrypt:
-            mult = -1;
-        vigenereString += ALPH[(ALPH.index(chaine[index]) + mult * ALPH.index(key[index % len(key)])) % len(ALPH)];
+
+        print(index % len(key));
+        indexDecode = (ALPH.index(chaine[index]) + mult * ALPH.index(key[index % len(key)])) % len(ALPH);
+        print(indexDecode);
+        # vigenereString += ALPH[indexDecode];
         index += 1;
     return vigenereString;
+
 
 def regroupement(chaine, taille):
     chaineTmp = chaine.replace(" ", "").upper();
@@ -45,16 +53,13 @@ def regroupement(chaine, taille):
     return group;
 
 
-
 chaineToEncrypt = "VOI  CIU  NME  SSA  GE";
 key = "ABC  ABC  ABC  ABC  AB";
 encryptChaine = vigenere(chaineToEncrypt, key);
 print(encryptChaine);
 print(vigenere(encryptChaine, key, decrypt=True));
 
-
-print(regroupement ("Mes vieilles tantes", 3));
-
+print(regroupement("Mes vieilles tantes", 3));
 
 text = '''PVADGHFLSHPJNPLUVAGXVVRBRUKCGXEVQINPVBXLVZLRMKFLSXEZQXOGCCHXEICIXUKSCXKEDDKORRXHPHSXGGJRRHPESTJWVBTJWVJFNGJSCLQ
 LBJGUVSATNRJXFKKCBTKJOJXEVJJBQLATNZHSXECUCIBGELTGVGCJOGERPMQLRBHOVLIKGMCAXTCCHXEICIXUKYRVGJQXUNVYIHWJATLVSGTGRFSGJ
@@ -72,3 +77,6 @@ keyLengthMax = 7
 for keySize in range(3, keyLengthMax):
     print("Try Size:", keySize)
     print(formatFrequences(frequences(text, keySize)));
+
+decrypt = vigenere(text, "H", decrypt=True);
+print(decrypt[58:63], decrypt);
