@@ -20,5 +20,3 @@ def calculate(operationStr):
         else:
             tmp_g = ops[c](tmp_g, tmp_d);
     return tmp_g;
-
-print(calculate("12 4 - 2 * 16 ="))
