@@ -1,5 +1,4 @@
-from .inputBloc import *
-from .varintutils import *
+from .transaction import *
 import unittest
 
 
