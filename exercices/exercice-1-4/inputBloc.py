@@ -25,19 +25,23 @@ class Input:
         print(self.sequence);
 
 
-
-
 def decodeScriptSig(scriptSig, input_decode):
-    varint_scriptsig_len, varIntScriptSig = getVarInt(scriptSig);
-    scriptSig = scriptSig[varint_scriptsig_len:]
-
     varint_signature_len, varIntSignature = getVarInt(scriptSig);
     input_decode.signature = hex_to_str(scriptSig[varint_signature_len:varint_signature_len + varIntSignature]);
 
-    publicKeyWrapper = scriptSig[varint_scriptsig_len + varIntSignature:];
-    varint_plublickey_len, varIntPublicKey = getVarInt(publicKeyWrapper);
-    input_decode.public_key = hex_to_str(publicKeyWrapper[varint_plublickey_len:varint_plublickey_len + varIntPublicKey]);
-    return varint_scriptsig_len + varIntScriptSig;
+    publicKeyVarInt = scriptSig[ varint_signature_len + varIntSignature:];
+    varint_plublickey_len, varIntPublicKey = getVarInt(publicKeyVarInt);
+
+    input_decode.public_key = hex_to_str(publicKeyVarInt[varint_plublickey_len:varint_plublickey_len + varIntPublicKey]);
+
+
+def decodeScriptSigVarInt(varInt_scriptSig, input_decode):
+    varint_scriptsig_len, varIntScriptSigValue = getVarInt(varInt_scriptSig);
+    scriptSig = varInt_scriptSig[varint_scriptsig_len:]
+
+    decodeScriptSig(scriptSig, input_decode)
+
+    return varint_scriptsig_len + varIntScriptSigValue;
 
 def decodeStrInput(input):
     input_byteArray = bytearray.fromhex(input)
@@ -51,7 +55,7 @@ def decodeInput(input_byteArray):
 
     scriptSig = input_byteArray[HASH_FIELD_LEN + OUTPUTINDEX_FIELD_LEN:-4];
 
-    script_sig_len = decodeScriptSig(scriptSig, input_decode);
+    script_sig_len = decodeScriptSigVarInt(scriptSig, input_decode);
     index_start_sequence = HASH_FIELD_LEN + OUTPUTINDEX_FIELD_LEN + script_sig_len;
     input_decode.sequence = hex_to_str(input_byteArray[index_start_sequence:index_start_sequence + OUTPUTINDEX_FIELD_LEN]);
     input_decode.length = index_start_sequence + OUTPUTINDEX_FIELD_LEN
@@ -69,9 +73,12 @@ def test():
                     "ce596e692021b66441b39b4b35e64e012102f63ae3eba460a8ed1be568b0c9a6c947abe9f079bcf861a7fdb2fd577ed"
                     "48a81Feffffff");
     print(len(inputTest))
-    input_decode = decodeInput(inputTest);
+    input_decode = decodeStrInput(inputTest);
     input_decode.print()
     print(input_decode.length)
 
-#test()
+if __name__ == "__main__":
+    # execute only if run as a script
+    test()
+
 
