@@ -5,7 +5,7 @@ def cible(coefficient, exposant):
 
 
 def calculerDifficulteFromCible(cible):
-    return 2.7 * 10**67 / cible;
+    return round(2.7 * 10**67 / cible, 1);
 
 
 def calculerDifficulteFromBits(bits):
@@ -14,6 +14,6 @@ def calculerDifficulteFromBits(bits):
     coeff = bits_byteArray[1:4];
     return calculerDifficulteFromCible(cible(coeff, exponent));
 
-def blocReajustement(bloc):
-    return bloc % 2016 == 0;
+def blocReajustement(hauteurBloc):
+    return hauteurBloc % 2016 == 0;
 
