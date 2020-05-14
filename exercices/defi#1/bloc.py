@@ -97,8 +97,8 @@ def hex_to_str(hex_array):
 def extractCible(bits):
     print("bits")
     exponent = int.from_bytes(bits[0:1], byteorder='big');
-    coefficient = hex_to_str(bits[1:3]);
-    coefficient_int = int.from_bytes(bytearray.fromhex(coefficient), byteorder='little')
+    coefficient = hex_to_str(bits[1:4]);
+    coefficient_int = int.from_bytes(bytearray.fromhex(coefficient), byteorder='big')
     print(coefficient_int)
     return coefficient_int * 2 ** (8*(exponent-3));
 
