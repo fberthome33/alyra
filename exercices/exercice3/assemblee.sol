@@ -1,6 +1,9 @@
 pragma solidity ^0.6.0;
 contract Assemblee {
  address[] membres;
+ string[] descriptionDecisions;
+ uint[] votesPour;
+ uint[] votesContre;
 
  function rejoindre() public {
    membres.push(msg.sender);
@@ -14,4 +17,26 @@ contract Assemblee {
     }
     return false;
  }
+
+ function proposerDecision(string memory description) public {
+   if(estMembre(msg.sender)){
+     descriptionDecisions.push(description);
+     votesPour.push(0);
+     votesContre.push(0);
+   }
+ }
+
+ function voter(uint indice, bool value) public {
+    if(value) {
+        votesPour[indice] += 1;
+    } else {
+        votesContre[indice] += 1;
+    }
+ }
+
+ function comptabiliser(uint indice) public view returns (int){
+    return int(votesPour[indice] - votesContre[indice]);
+ }
+
 }
+
