@@ -20,7 +20,7 @@ def rechercheDebut(prefix, length):
     print("--- %s seconds ---" % (time.time() - start_time))
 
 
-for longueur in range (8, 10):
+for longueur in range (8, 13):
     print("longueur", longueur)
-    rechercheDebut("AAA", longueur)
+    rechercheDebut("AAAA", longueur)
 

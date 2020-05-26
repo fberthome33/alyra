@@ -5,8 +5,8 @@ def cible(coefficient, exposant):
 
 
 def calculerDifficulteFromCible(cible):
-    return 0xffff << 208 / cible;
-    #return 2.7 * 10**67 / cible;
+    #return 0xffff << 208 / cible;
+    return 2.7 * 10**67 / cible;
 
 
 def calculerDifficulteFromBits(bits):

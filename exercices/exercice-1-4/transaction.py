@@ -39,9 +39,12 @@ def decodeScriptSig(scriptSig, input_decode):
         publicKeyWrapper[varint_plublickey_len:varint_plublickey_len + varIntPublicKey]);
 
 
-def decodeTransaction(transaction_string):
-    transaction_decode = Transaction();
+def decodeStrTransaction(transaction_string):
     transaction_bytearray = bytearray.fromhex(transaction_string)
+    return decodeTransaction(transaction_bytearray);
+
+def decodeTransaction(transaction_bytearray):
+    transaction_decode = Transaction();
 
     transaction_decode.version = hex_to_str(transaction_bytearray[0:VERSION_FIELD_LEN]);
     len_varint_inputs, nb_inputs = getVarInt(transaction_bytearray[VERSION_FIELD_LEN:]);
@@ -76,5 +79,10 @@ transation = (  "0100000001f129de033c57582efb464e94ad438fff493cc4de4481729b85971
                 "f97672d9acb5130ec4f888ac18411a000000000017a9140b8372dffcb39943c7bfca84"
                 "f9c40763b8fa9a068700000000");
 
-input_decode = decodeTransaction(transation);
-input_decode.print()
+
+if __name__ == "__main__":
+    # execute only if run as a script
+    input_decode = decodeStrTransaction(transation);
+    input_decode.print()
+
+
