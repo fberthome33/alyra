@@ -20,4 +20,5 @@ contract Pendule  {
  function provoquerUnePulsation() public view {
    pulse.ajouterBattement();
  }
+
 }
