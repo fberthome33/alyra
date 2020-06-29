@@ -1,0 +1,211 @@
+{
+	"info": {
+		"_postman_id": "28473bbb-cc5b-4a4a-af05-9f69973dd2df",
+		"name": "alyra#defi#1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "hexaToDecimal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/hexaToDecimal/0101",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"hexaToDecimal",
+						"0101"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bigToLittleEndian",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/bigToLittleEndian/0x160117",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"bigToLittleEndian",
+						"0x160117"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "decimalToHexadecimal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:5000/decimalToHexa/16\n",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"decimalToHexa",
+						"16\n"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "varint",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/varint/fd1100",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"varint",
+						"fd1100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "bitsFieldToTarget",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/bitsFieldToTarget/1c0ae493",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"bitsFieldToTarget",
+						"1c0ae493"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "targetToDifficulty",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/targetToDifficulty/1147152896345386682952518188670047452875537662186691235300769792000",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"targetToDifficulty",
+						"1147152896345386682952518188670047452875537662186691235300769792000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "decoderawbloc",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "bloc",
+							"value": "010000001bd239b4c59b49af6646b8e33e998381dcd65d8ecd072d7e6f4a070000000000d06dab8476f29d257a402a9cc376a43c98ed89708349a9ffe2bc28ad207320aea702f74cd21c081b403581760101000000010000000000000000000000000000000000000000000000000000000000000000ffffffff0704d21c081b017effffffff0100f2052a01000000434104c23b0ca0f6ef4a6149840afce931dc346d1db2d67be49572aa7a6528189112cc740118cf53ad86589ba9bd375cdca2f1d52d0954d723905ee9953850d7a50242ac00000000",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/decoderawbloc",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"decoderawbloc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "decoderawtransaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "tx",
+							"value": "0100000001f129de033c57582efb464e94ad438fff493cc4de4481729b85971236858275c2010000006a4730440220155a2ea4a702cadf37052c87bfe46f0bd24809759acff8d8a7206979610e46f6022052b688b784fa1dcb1cffeef89e7486344b814b0c578133a7b0bce5be978a9208012103915170b588170cbcf6380ef701d19bd18a526611c0c69c62d2c29ff6863d501affffffff02ccaec817000000001976a9142527ce7f0300330012d6f97672d9acb5130ec4f888ac18411a000000000017a9140b8372dffcb39943c7bfca84f9c40763b8fa9a068700000000",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/decoderawtransaction",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"decoderawtransaction"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
