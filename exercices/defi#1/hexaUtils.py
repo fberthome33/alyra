@@ -3,7 +3,7 @@ from binascii import hexlify
 def calculerDifficulteFromCible(cible):
     return (2**16 - 1) * 2**208 / cible;
 
-def switchBigLittleEndian(hexBigEndian):
+def switchBigLittleEndianString(hexBigEndian):
     prefix = ""
     startIndex = 0;
     if hexBigEndian[0:2] == "0x":
