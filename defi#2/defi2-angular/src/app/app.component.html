@@ -1,0 +1,45 @@
+
+<span>
+    Demandes
+</span>
+
+
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+  
+    <!-- Position Column -->
+    <ng-container matColumnDef="remuneration">
+      <th mat-header-cell *matHeaderCellDef> Remuneration </th>
+      <td mat-cell *matCellDef="let element"> {{element.remuneration}} </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="delai_acceptation">
+      <th mat-header-cell *matHeaderCellDef> delai_acceptation </th>
+      <td mat-cell *matCellDef="let element"> {{element.delai_acceptation}} </td>
+    </ng-container>
+  
+    <!-- Weight Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+  
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="etat">
+      <th mat-header-cell *matHeaderCellDef> Etat </th>
+      <td mat-cell *matCellDef="let element"> {{element.etat}} </td>
+    </ng-container>
+        <!-- Symbol Column -->
+    <ng-container matColumnDef="min_reputation">
+        <th mat-header-cell *matHeaderCellDef> min_reputation </th>
+        <td mat-cell *matCellDef="let element"> {{element.min_reputation}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  

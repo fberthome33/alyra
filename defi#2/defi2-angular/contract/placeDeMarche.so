@@ -1,0 +1,171 @@
+pragma experimental ABIEncoderV2;
+pragma solidity ^0.6.6;
+import "github.com/OpenZeppelin/openzeppelin-solidity/contracts/math/SafeMath.sol";
+
+contract PlaceMarche {
+
+    using SafeMath for uint256;
+
+    struct Membre {
+        string name;
+        address adresse;
+        uint reputation;
+    }
+
+    struct Entreprise {
+        string name;
+        address adresse;
+    }
+    enum Etat { OUVERTE, ENCOURS, FERMEE }
+
+    struct Demande {
+        uint256 remuneration;
+        uint delai_acceptation;
+        string description;
+        Etat etat;
+        uint min_reputation;
+        address demandeur;
+        address[] candidats;
+    }
+
+    uint REPUTATION_MINIMALE = 1;
+    mapping (uint => address) gagnants;
+    mapping (uint => bytes32) livraisons;
+    mapping (address => Membre) membreHash;
+    address[] banedMembers;
+    address[] admins;
+    Entreprise[] entreprises;
+    Demande[] demandes;
+
+    function inscription(string memory name) public {
+        require(!estMembre(msg.sender), "Vous ne pouvez pas vous inscrire de nouveau");
+        Membre memory new_membre = Membre(name, msg.sender, 1);
+        membres.push(new_membre);
+        membreHash[msg.sender] = new_membre;
+    }
+
+    function inscriptionEntreprise(string memory name) public {
+        require(!estMembreEntreprise(msg.sender), "Vous ne pouvez pas vous inscrire de nouveau");
+        Entreprise memory new_entreprise = Entreprise(name, msg.sender);
+        entreprises.push(new_entreprise);
+
+    }
+
+    function estMembre(address utilisateur) public view returns (bool) {
+        /*
+            Il faut parcourir le tableau d'address des membres
+            et vérifier si l'adresse de l'utilisateur reseignée exite alors return true
+            sinon false
+        */
+        for (uint i = 0; i < membres.length; i++) {
+            if (membres[i].adresse == utilisateur) {
+              return true;
+            }
+        }
+        return false;
+    }
+
+    function estMembreEntreprise(address entreprise) public view returns (bool) {
+        /*
+            Il faut parcourir le tableau d'address des membres
+            et vérifier si l'adresse de l'utilisateur reseignée exite alors return true
+            sinon false
+        */
+        for (uint i = 0; i < entreprises.length; i++) {
+            if (entreprises[i].adresse == entreprise) {
+              return true;
+            }
+        }
+        return false;
+    }
+
+
+       function estAdministrateur(address user) public view returns (bool) {
+        /*
+            Il faut parcourir le tableau d'address des membres
+            et vérifier si l'adresse de l'utilisateur reseignée exite alors return true
+            sinon false
+        */
+        for (uint i = 0; i < admins.length; i++) {
+            if (admins[i] == user) {
+              return true;
+            }
+        }
+        return false;
+    }
+
+    function banir(address utilisateurBani) public {
+        require(estAdministrateur(msg.sender), "Vous devez être un administrateur");
+        for (uint i = 0; i < membres.length; i++) {
+            if (membres[i].adresse == utilisateurBani) {
+                membres[i].reputation = 0;
+                banedMembers.push(utilisateurBani);
+            }
+        }
+
+    }
+
+    function ajouterDemande(string memory _description, uint _min_reputation, uint _delai_acceptation) public payable {
+        require(estMembreEntreprise(msg.sender), "Vous n êtes pas inscrit sur la plate forme");
+        require(msg.value > 0 wei,"La remuneration doit être fixée");
+        address[] memory candidats;
+        Demande memory  nouvelle_demande = Demande({  description: _description,
+                                                remuneration: msg.value.mul(98).div(100),
+                                                delai_acceptation : _delai_acceptation,
+                                                etat : Etat.OUVERTE,
+                                                min_reputation : _min_reputation,
+                                                demandeur : msg.sender,
+                                                candidats : candidats
+        });
+        demandes.push(nouvelle_demande);
+    }
+
+
+    function postuler(uint _idDemande) public {
+        require(_idDemande < demandes.length, "La Demande n'existe pas.");
+        require(estMembre(msg.sender), "Vous n êtes pas inscrit sur la plate forme");
+        address[] memory candidats = demandes[_idDemande].candidats;
+        for (uint i = 0; i < candidats.length; i++) {
+            if (candidats[i] == msg.sender) {
+                revert(" Vous avez deja postuler à cette demande");
+            }
+        }
+        require(membreHash[msg.sender].reputation >= demandes[_idDemande].min_reputation, "votre reputation n'est pas suffisante");
+        demandes[_idDemande].candidats.push(msg.sender);
+    }
+
+    function accepterOffre(uint _idDemande, address illustrateur) public {
+        require(_idDemande < demandes.length, "La Demande n'existe pas.");
+        require(estMembreEntreprise(msg.sender), "Vous n êtes pas inscrit sur la plate forme");
+
+        address[] memory candidats = demandes[_idDemande].candidats;
+        bool findIllustrateur = false;
+        for (uint i = 0; i < candidats.length; i++) {
+            if (candidats[i] == illustrateur) {
+                findIllustrateur = true;
+                break;
+            }
+        }
+        if(findIllustrateur) {
+            gagnants[_idDemande] = illustrateur;
+            demandes[_idDemande].etat = Etat.ENCOURS;
+        } else {
+             revert("Ce candidat n a pas postulé");
+        }
+    }
+
+    function livraison(uint _idDemande, bytes32 work) public {
+        require(estMembre(msg.sender), "Vous n êtes pas inscrit sur la plate forme");
+        require(_idDemande < demandes.length, "La Demande n'existe pas.");
+        require(livraisons[_idDemande] == 0, "Une livraison a deja été faite pour ce projet");
+        require(gagnants[_idDemande] == msg.sender, "Vous ne pouvez pas déposé de travail pour ce projet");
+        livraisons[_idDemande] = work;
+        msg.sender.transfer(demandes[_idDemande].remuneration);
+        demandes[_idDemande].etat = Etat.FERMEE;
+        membreHash[msg.sender].reputation +=1;
+    }
+
+    function listerDemandes() public view returns ( Demande[] memory) {
+        return demandes;
+    }
+}

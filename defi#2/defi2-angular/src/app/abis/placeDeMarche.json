@@ -1,0 +1,175 @@
+{
+    "contractName": "SceneOuverte",
+    "abi":
+	[
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "_description",
+					"type": "string"
+				}
+			],
+			"name": "ajouterDemande",
+			"outputs": [],
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "utilisateurBani",
+					"type": "address"
+				}
+			],
+			"name": "banir",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "user",
+					"type": "address"
+				}
+			],
+			"name": "estAdministrateur",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "utilisateur",
+					"type": "address"
+				}
+			],
+			"name": "estMembre",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "entreprise",
+					"type": "address"
+				}
+			],
+			"name": "estMembreEntreprise",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "name",
+					"type": "string"
+				}
+			],
+			"name": "inscription",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "name",
+					"type": "string"
+				}
+			],
+			"name": "inscriptionEntreprise",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "listerDemandes",
+			"outputs": [
+				{
+					"components": [
+						{
+							"internalType": "uint256",
+							"name": "remuneration",
+							"type": "uint256"
+						},
+						{
+							"internalType": "uint256",
+							"name": "delai_acceptation",
+							"type": "uint256"
+						},
+						{
+							"internalType": "string",
+							"name": "description",
+							"type": "string"
+						},
+						{
+							"internalType": "enum PlaceMarche.Etat",
+							"name": "etat",
+							"type": "uint8"
+						},
+						{
+							"internalType": "uint256",
+							"name": "min_reputation",
+							"type": "uint256"
+						}
+					],
+					"internalType": "struct PlaceMarche.Demande[]",
+					"name": "",
+					"type": "tuple[]"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		}
+	],
+    "networks": {
+        "5777": {
+            "events": {},
+            "links": {},
+            "address": "0x134a4270C15Af2f6f23D48418CCF3F0DB1B451be",
+            "transactionHash": ""
+        },
+        "3": {
+            "events": {},
+            "links": {},
+            "address": "0xb666B2F6A7dBFF64c04c643eDF75fB375D4fdB86",
+            "transactionHash": "0x6ac19d18c3ceec6edf2dbaa32d0a5a93b3fcaff28d4a036c3823daead82aaa14"
+		},
+		"42": {
+            "events": {},
+            "links": {},
+            "address": "0x72898e66a3f1275a5a95d95a9041d64f700982c9",
+            "transactionHash": "0x6ac19d18c3ceec6edf2dbaa32d0a5a93b3fcaff28d4a036c3823daead82aaa14"
+        }
+    }
+}
